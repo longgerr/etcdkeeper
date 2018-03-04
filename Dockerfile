@@ -2,7 +2,9 @@ FROM golang:1.9-alpine as builder
 
 ADD . /go/src/github.com/evildecay/etcdkeeper
 
-RUN apk add -U git \
+RUN apk update \
+    && apk add git \
+    && apk add curl \	
     && cd /go/src/github.com/evildecay/etcdkeeper \
     && go get github.com/golang/dep/... \
     && dep ensure -update \
@@ -10,7 +12,7 @@ RUN apk add -U git \
 
 FROM alpine:3.7
 
-ENV HOST="127.0.0.1"
+ENV HOST="0.0.0.0"
 ENV PORT="8080"
 ENV NAME="request"
 
